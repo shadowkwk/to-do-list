@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Web-based To-Do App</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"/>
+
+    </head>
+    <body>
+        <div id="app" class="container w-75 ">
+            <h1>To-Do List</h1>
+
+            <div class="row justify-content-between">
+                <form v-on:submit="addTodo" class="form-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" v-model="newItem" placeholder="Add a new todo" required class="form-control">
+                    </div>
+                    <button class="btn btn-primary btn-sm mb-2">Add</button>
+                </form>
+                <div class="mx-sm-3 mb-2">
+                    <button class="btn btn-secondary btn-sm" v-on:click="hideList">{{button.text}} completed items</button>
+                </div>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <!--<th>ID</th>-->
+                        <th>Content</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="row in sortedrows">
+                        <!--<td>{{row['id']}}</td>-->
+
+                        <td v-if="row.id == editForm.id">
+                            <input type="text" v-model="editForm.content" required class="form-control form-control-sm">
+                        </td>
+
+                        <td v-else>{{row['content']}}</td>
+
+                        <td>
+                            <label v-if="row.completed === true">Completed</label>
+                            <label v-else>Pending</label>
+                            <input type="checkbox" v-model="row.completed" v-on:change="saveTodo(row)" v-bind:id="'checkbox ' + row.id">
+                        </td>
+
+                        <td>
+                            <button v-on:click="saveTodo" v-if="row.id== editForm.id" class="btn btn-success btn-sm">Save</button>
+                            <button v-on:click="editTodo(row)"  class="btn btn-primary btn-sm">Edit</button>
+                            <button v-on:click="deleteTodo(row)"  class="btn btn-danger btn-sm">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" @click="prevPage">Previous</a></li>
+                    <li class="page-item"><a class="page-link" @click="nextPage">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+        <!--<script src="js/script.js"></script>-->
+        <script th:src="@{js/script.js}"></script>
+
+    </body>
+</html>
